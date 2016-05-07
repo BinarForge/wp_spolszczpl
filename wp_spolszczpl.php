@@ -36,14 +36,34 @@ function wp_spolszczpl_meta( $post ) {
 		<script type="text/javascript">
 			var proxyPath = "<?= get_ajax_path() ?>";
 
+			function isTinyMCEEnabled()
+			{
+				var contentWrapper = jQuery('#wp-content-wrap');
+				return !contentWrapper.hasClass('html-active');
+			}
+
 			function getContent()
 			{
-				return jQuery('#content').val();
+				if(isTinyMCEEnabled())
+				{
+					return tinyMCE.activeEditor.getContent();
+				}
+				else
+				{
+					return jQuery('#content').val();
+				}
 			}
 
 			function setContent(newContent)
 			{
-				jQuery('#content').val(newContent);
+				if(isTinyMCEEnabled())
+				{
+					tinyMCE.activeEditor.setContent(newContent);
+				}
+				else
+				{
+					jQuery('#content').val(newContent);
+				}
 			}
 
 			function OnPluginButtonClick(e)
